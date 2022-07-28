@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,4 +38,9 @@ Route::middleware([
 Route::get('photos', function () {
     //dd(Photo::all());
     return Inertia::render('Guest/Photos');
+});
+
+Route::get('article', function () {
+    //dd(Photo::all());
+    return Inertia::render('Article');
 });
