@@ -29,9 +29,15 @@ defineProps({
 </template>
 
 <style>
-    .card {
-        display: inline-block;
-        max-width: 300px;
-        margin: 10px;
-    }
+
+.photos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.card {
+    flex: 1 0 200px;
+}
 </style>
