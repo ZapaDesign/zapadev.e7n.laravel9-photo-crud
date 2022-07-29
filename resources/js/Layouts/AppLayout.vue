@@ -58,7 +58,7 @@ const logout = () => {
                                 </JetNavLink>
 
                                 <JetNavLink :href="route('admin.posts')">
-                                    Photos
+                                    Posts
                                 </JetNavLink>
 
                             </div>

@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
 use App\Models\Photo;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -36,7 +37,7 @@ Route::get('/article', function () {
     ]);
 });
 
-
+// Back-office
 
 Route::middleware([
     'auth:sanctum',
@@ -47,19 +48,36 @@ Route::middleware([
     ->name('admin.')
     ->group(function () {
 
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+
+
+
+    // Photo
 
     Route::get('/photos', function () {
-        return inertia('Admin/Photos', [
-            'photos'      => Photo::all(),
-        ]);
+        return inertia('Admin/Photos', ['photos' => Photo::all(),]);
     })->name('photos');
 
-    Route::get('/posts', function () {
-        return inertia('Admin/Posts', [
+    Route::get('/photos/create', function () {
+        return inertia('Admin/PhotosCreate');
+    })->name('photos.create');
 
+    Route::post('/photos', function (Request $request) {
+
+        $validated_data = $request->validate([
+            'path' => ['required', 'image', 'max:2500'],
+            'description' => ['required']
         ]);
+        $path = Storage::disk('public')->put('photos', $request->file('path'));
+        $validated_data['path'] = $path;
+        Photo::create($validated_data);
+        return to_route('admin.photos');
+    })->name('photos.store');
+
+
+    // Posts
+
+    Route::get('/posts', function () {
+        return inertia('Admin/Posts');
     })->name('posts');
 });
