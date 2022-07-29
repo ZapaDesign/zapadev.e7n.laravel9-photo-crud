@@ -16,11 +16,11 @@ defineProps({
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
-                    <section class="photos">
+                    <div class="photos px-6 py-6">
                         <div v-for="photo in photos" :key="photo.id" class="card" >
                             <img :src="photo.path" alt="">
                         </div>
-                    </section>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,7 +29,6 @@ defineProps({
 </template>
 
 <style>
-
 .photos {
     display: flex;
     flex-wrap: wrap;

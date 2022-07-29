@@ -26,6 +26,17 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/article', function () {
+    return Inertia::render('Article', [
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion'     => PHP_VERSION,
+        'photos' => Photo::all(),
+    ]);
+});
+
+
 
 Route::middleware([
     'auth:sanctum',
@@ -45,18 +56,10 @@ Route::middleware([
             'photos'      => Photo::all(),
         ]);
     })->name('photos');
+
+    Route::get('/posts', function () {
+        return inertia('Admin/Posts', [
+
+        ]);
+    })->name('posts');
 });
-
-
-//Route::get('photos', function () {
-//    return Inertia::render('Guest/Photos', [
-//        'photos'      => Photo::all(),
-//        'canLogin'    => Route::has('login'),
-//        'canRegister' => Route::has('register'),
-//    ]);
-//});
-//
-//Route::get('article', function () {
-//    //dd(Photo::all());
-//    return Inertia::render('Article');
-//});
