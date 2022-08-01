@@ -41,7 +41,7 @@ defineProps({
 
                 <div class="photos px-6 py-6">
                     <div v-for="photo in photos" :key="photo.id" class="card" >
-                        <img :src="photo.path" alt="">
+                        <img :src="'/storage/'+photo.path" alt="">
                     </div>
                 </div>
 

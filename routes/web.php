@@ -52,10 +52,13 @@ Route::middleware([
 
 
 
+
     // Photo
 
     Route::get('/photos', function () {
-        return inertia('Admin/Photos', ['photos' => Photo::all(),]);
+        return inertia('Admin/Photos', [
+            'photos' => Photo::orderByDesc('id')->get(),
+            ]);
     })->name('photos');
 
     Route::get('/photos/create', function () {
@@ -63,17 +66,59 @@ Route::middleware([
     })->name('photos.create');
 
     Route::post('/photos', function (Request $request) {
-
         $validated_data = $request->validate([
             'path' => ['required', 'image', 'max:2500'],
             'description' => ['required']
         ]);
+//        dd($validated_data);
         $path = Storage::disk('public')->put('photos', $request->file('path'));
         $validated_data['path'] = $path;
+//        dd($validated_data);
         Photo::create($validated_data);
         return to_route('admin.photos');
     })->name('photos.store');
 
+    Route::get('/photos/{photo}/edit', function (Photo $photo) {
+        return inertia('Admin/PhotosEdit', [
+            'photo' => $photo
+        ]);
+    })->name('photos.edit');
+
+    Route::put('/photos/{photo}', function (Request $request, Photo $photo)
+    {
+        //dd(Request::all());
+
+        $validated_data = $request->validate([
+            'description' => ['required']
+        ]);
+
+        if ($request->hasFile('path')) {
+            $validated_data['path'] = $request->validate([
+                'path' => ['required', 'image', 'max:1500'],
+
+            ]);
+
+            // Grab the old image and delete it
+            // dd($validated_data, $photo->path);
+            $oldImage = $photo->path;
+            Storage::delete($oldImage);
+
+            $path = Storage::disk('public')->put('photos', $request->file('path'));
+            $validated_data['path'] = $path;
+        }
+
+        //dd($validated_data);
+
+        $photo->update($validated_data);
+        return to_route('admin.photos');
+    })->name('photos.update');
+
+        Route::delete('/photos/{photo}', function (Photo $photo)
+        {
+            Storage::delete($photo->path);
+            $photo->delete();
+            return to_route('admin.photos');
+        })->name('photos.delete');
 
     // Posts
 

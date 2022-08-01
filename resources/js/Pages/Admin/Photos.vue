@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Link } from '@inertiajs/inertia-vue3';
 defineProps({
     photos: Array
 });
@@ -17,7 +18,12 @@ defineProps({
                 <!-- All posts goes here -->
                 <h1 class="text-2xl">Photos</h1>
 
-                <a class="px-4 bg-sky-900 text-white rounded-md" :href="route('admin.photos.create')">Create</a>
+<!--                <a class="px-4 bg-sky-900 text-white rounded-md" :href="route('admin.photos.create')">Create</a>-->
+
+                <Link
+                    class="inline-block px-5 py-3 bg-sky-900 text-white rounded-md"
+                    :href="route('admin.photos.create')"
+                >Create</Link>
 
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -56,7 +62,7 @@ defineProps({
                                                 <div class="flex-shrink-0 h-10 w-10">
                                                     <img
                                                         class="h-10 w-10 rounded-full"
-                                                        :src="photo.path"
+                                                        :src="'/storage/' + photo.path"
                                                         alt
                                                     />
                                                 </div>
@@ -71,7 +77,14 @@ defineProps({
                                         <!-- ACTIONS -->
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="#" class="text-indigo-600 hover:text-indigo-900">
-                                                View - Edit - Delete
+                                                View
+                                            </a>
+                                            <Link
+                                                class="text-indigo-600 hover:text-indigo-900 pl-3 pr-3"
+                                                :href="route('admin.photos.edit', photo.id)"
+                                            >Edit</Link>
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">
+                                                Delete
                                             </a>
                                         </td>
                                     </tr>

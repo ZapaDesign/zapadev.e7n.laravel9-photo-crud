@@ -1,7 +1,29 @@
+<script>
+import { defineComponent } from "vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import { useForm } from '@inertiajs/inertia-vue3';
+
+export default defineComponent({
+    components: {
+        AppLayout,
+    },
+
+    setup () {
+        const form = useForm({
+            path: null,
+            description: null,
+        })
+
+        return { form }
+    }
+
+});
+</script>
+
 <template>
     <app-layout title="Dashboard">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Photos</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Add a new Photo</h2>
         </template>
 
         <div class="py-12">
@@ -44,26 +66,3 @@
         </div>
     </app-layout>
 </template>
-
-
-<script>
-import { defineComponent } from "vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
-import { useForm } from '@inertiajs/inertia-vue3';
-
-export default defineComponent({
-    components: {
-        AppLayout,
-    },
-
-    setup () {
-        const form = useForm({
-            path: null,
-            description: null,
-        })
-
-        return { form }
-    }
-
-});
-</script>
