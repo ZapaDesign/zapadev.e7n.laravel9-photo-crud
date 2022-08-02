@@ -51,8 +51,6 @@ Route::middleware([
     Route::get('/', function () { return Inertia::render('Dashboard'); })->name('dashboard');
 
 
-
-
     // Photo
 
     Route::get('/photos', function () {
@@ -113,7 +111,7 @@ Route::middleware([
         return to_route('admin.photos');
     })->name('photos.update');
 
-        Route::delete('/photos/{photo}', function (Photo $photo)
+    Route::delete('/photos/{photo}', function (Photo $photo)
         {
             Storage::delete($photo->path);
             $photo->delete();
