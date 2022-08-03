@@ -1,8 +1,59 @@
-<script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+<script>
+import { defineComponent } from "vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link } from '@inertiajs/inertia-vue3';
-defineProps({
-    photos: Array
+import { useForm } from '@inertiajs/inertia-vue3';
+import JetDialogModal from '@/Jetstream/DialogModal.vue';
+import JetDangerButton from '@/Jetstream/DangerButton.vue'
+import { ref } from "vue";
+export default defineComponent({
+    components: {
+        AppLayout,
+        Link,
+        JetDialogModal,
+        JetDangerButton
+    },
+    props: {
+        photos: Array,
+    },
+
+    setup() {
+        const form = useForm({
+            _method: "DELETE",
+        });
+        const data = ref({
+            show_modal: false,
+            photo: {
+                id: null,
+                path: null,
+                description: null,
+            }
+
+        })
+
+        const delete_photo = (photo) => {
+            //console.log(photo);
+            console.log(photo.id, photo.path, photo.description);
+            data.value = {
+                photo: {
+                    id: photo.id,
+                    path: photo.path,
+                    description: photo.description
+                },
+                show_modal: true
+            };
+        }
+        const deleting_photo = (id) => {
+            form.post(route('admin.photos.delete', id))
+            closeModal();
+        }
+
+        const closeModal = () => {
+            data.value.show_modal = false;
+        }
+
+        return { form, data, closeModal, delete_photo, deleting_photo }
+    }
 });
 </script>
 
@@ -83,9 +134,12 @@ defineProps({
                                                 class="text-indigo-600 hover:text-indigo-900 pl-3 pr-3"
                                                 :href="route('admin.photos.edit', photo.id)"
                                             >Edit</Link>
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">
+
+                                            <JetButton
+                                                class="text-indigo-600 hover:text-indigo-900 cursor-pointer"
+                                                @click="delete_photo(photo)">
                                                 Delete
-                                            </a>
+                                            </JetButton>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -96,6 +150,28 @@ defineProps({
                 </div>
             </div>
         </div>
+
+        <JetDialogModal :show="data.show_modal">
+            <template #title>
+                Photo: {{ data.photo.description.slice(0, 20) + '...' }}
+                <div class="content-center">
+                    <img
+                        class="rounded-md"
+                        :src="'/storage/' + data.photo.path"
+                        alt
+                    />
+                </div>
+            </template>
+            <template #content>
+                Are you sure you want to delete this photo?
+            </template>
+            <template #footer>
+                <button @click="closeModal" class="px-4 py-2">Close</button>
+                <form @submit.prevent="deleting_photo(data.photo.id)">
+                    <jet-danger-button type="submit">Yes, I am sure!</jet-danger-button>
+                </form>
+            </template>
+        </JetDialogModal>
     </app-layout>
 </template>
 
