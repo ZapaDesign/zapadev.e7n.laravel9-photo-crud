@@ -2,10 +2,12 @@
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/inertia-vue3';
 
 export default defineComponent({
     components: {
         AppLayout,
+        Link
     },
     props: {
         photo: Object
@@ -30,37 +32,25 @@ export default defineComponent({
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <Link
+                    class="text-indigo-600 hover:text-indigo-900 pl-3 pr-3"
+                    :href="route('admin.photos')"
+                >
+                    Back
+                </Link>
                 <form @submit.prevent="form.post(route('admin.photos.update', photo.id))">
-                    <div>
-                        <label
-                            for="description"
-                            class="block text-sm font-medium text-gray-700"
-                        >Description</label>
-                        <div class="mt-1">
-                            <textarea
-                                id="description"
-                                name="description"
-                                rows="3"
-                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                                placeholder="lorem ipsum"
-                                v-model="form.description"
-                            />
-                        </div>
-                        <p class="mt-2 text-sm text-gray-500">Brief description for your photo</p>
-                        <div
-                            class="text-red-500"
-                            v-if="form.errors.description"
-                        >{{ form.errors.description }}</div>
-                    </div>
 
-                    <div class="grid grid-cols-2">
+                    <div class="grid md:grid-cols-2">
                         <div class="preview p-4">
-                            <img :src="'/storage/' + photo.path" alt />
+                            <label class="block text-sm font-medium text-gray-700">Current photo</label>
+                            <img
+                                class="w-full"
+                                :src="'/storage/' + photo.path" alt />
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Photo</label>
+                        <div class="flex flex-col p-4">
+                            <label class="block text-sm font-medium text-gray-700">New photo</label>
                             <div
-                                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+                                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md h-full"
                             >
                                 <div class="space-y-1 text-center">
                                     <svg
@@ -98,6 +88,28 @@ export default defineComponent({
                             </div>
                             <div class="text-red-500" v-if="form.errors.path">{{ form.errors.path }}</div>
                         </div>
+                    </div>
+
+                    <div>
+                        <label
+                            for="description"
+                            class="block text-sm font-medium text-gray-700"
+                        >Description</label>
+                        <div class="mt-1">
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="20"
+                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                                placeholder="lorem ipsum"
+                                v-model="form.description"
+                            />
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">Brief description for your photo</p>
+                        <div
+                            class="text-red-500"
+                            v-if="form.errors.description"
+                        >{{ form.errors.description }}</div>
                     </div>
 
                     <button

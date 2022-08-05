@@ -127,9 +127,14 @@ export default defineComponent({
                                         </td>
                                         <!-- ACTIONS -->
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">
+
+                                            <Link
+                                                class="text-indigo-600 hover:text-indigo-900 pl-3 pr-3"
+                                                :href="route('admin.photos.show', photo.id)"
+                                            >
                                                 View
-                                            </a>
+                                            </Link>
+
                                             <Link
                                                 class="text-indigo-600 hover:text-indigo-900 pl-3 pr-3"
                                                 :href="route('admin.photos.edit', photo.id)"

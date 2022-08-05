@@ -59,6 +59,12 @@ Route::middleware([
             ]);
     })->name('photos');
 
+    Route::get('/photos/{photo}/show', function (Photo $photo) {
+        return inertia('Admin/PhotosShow', [
+            'photo' => $photo
+        ]);
+    })->name('photos.show');
+
     Route::get('/photos/create', function () {
         return inertia('Admin/PhotosCreate');
     })->name('photos.create');
