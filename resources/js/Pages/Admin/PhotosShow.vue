@@ -1,7 +1,6 @@
 <script setup>
 import { defineComponent } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { marked } from 'marked';
 import { Link } from '@inertiajs/inertia-vue3';
 
 defineProps({
