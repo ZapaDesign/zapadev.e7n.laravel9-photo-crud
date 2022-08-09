@@ -1,11 +1,16 @@
 <script setup>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link } from '@inertiajs/inertia-vue3';
+import {Link} from '@inertiajs/inertia-vue3';
+// import 'highlight.js/styles/default.css';
+// import {Highlight} from 'vue-markdown-highlight'
+import {marked} from 'marked';
 
-defineProps({
+const props = defineProps({
     photo: Object
 });
+
+const content = marked.parse(props.photo.description)
 
 </script>
 
@@ -24,11 +29,11 @@ defineProps({
                 </Link>
                 <div class="grid grid-cols-2">
                     <div class="preview p-4">
-                        <img :src="'/storage/' + photo.path" alt />
+                        <img :src="'/storage/' + props.photo.path" alt/>
                     </div>
                     <div
+                        v-html="content"
                         class="preview p-4">
-                        {{photo.description}}
                     </div>
                 </div>
             </div>
